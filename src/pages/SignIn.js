@@ -7,6 +7,9 @@ import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRig
 // Way to import an image when to be used as a source img (src) for <img> tag:
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 
+// To sign in users with email and password:
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+
 const SignIn = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +41,31 @@ const SignIn = () => {
     }));
   };
 
+  // On Submit
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Creating auth:
+      const auth = getAuth();
+
+      // Promise returned by signInWithEmailAndPassword is assigned to userCredential:
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // If the credetial is correct (if 'user' is present), navigate to homepage:
+      if (userCredential.user) {
+        navigate('/');
+      }
+    } catch (error) {
+      // Later replaced by toastify:
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="pageContainer">
@@ -45,7 +73,7 @@ const SignIn = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <input
             type="email"
             className="emailInput"

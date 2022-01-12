@@ -14,8 +14,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
-          <Route path="/profile" element={<SignIn />} />
-          {/* SignIn will be replaced by Profile page later in the above route */}
+          <Route path="/profile" element={<Profile />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

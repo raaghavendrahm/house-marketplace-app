@@ -59,7 +59,7 @@ const SignUp = () => {
       // Creating auth
       const auth = getAuth();
 
-      // createUserWithEmailAndPassword returns a promise with user credentials. Assigning that ot "userCredential"
+      // createUserWithEmailAndPassword returns a promise with user credentials. Assigning that to "userCredential"
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
