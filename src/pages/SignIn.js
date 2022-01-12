@@ -10,6 +10,9 @@ import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 // To sign in users with email and password:
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
+// To use toastify for alerts:
+import { toast } from 'react-toastify';
+
 const SignIn = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -61,8 +64,7 @@ const SignIn = () => {
         navigate('/');
       }
     } catch (error) {
-      // Later replaced by toastify:
-      console.log(error);
+      toast.error('Incorrect User Credentials');
     }
   };
 

@@ -19,6 +19,9 @@ import { db } from '../firebase.config';
 // To add registered users to firestore:
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 
+// To use toastify for alerts:
+import { toast } from 'react-toastify';
+
 const SignUp = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -89,8 +92,7 @@ const SignUp = () => {
       // Redirecting to homepage:
       navigate('/');
     } catch (error) {
-      // Now, error is logged, if any. Later, using "toastify" package, error will be displayed in the UI.
-      console.log(error);
+      toast.error('Something went wrong with registration');
     }
   };
 
