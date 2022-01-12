@@ -16,6 +16,9 @@ import {
 
 import { db } from '../firebase.config';
 
+// To add registered users to firestore:
+import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
+
 const SignUp = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -70,6 +73,18 @@ const SignUp = () => {
       updateProfile(auth.currentUser, {
         displayName: name,
       });
+
+      // To not to harm the existing formData state, a copy is created in the proces of adding registered users to firebase:
+      const formDataCopy = { ...formData };
+
+      // Before pushing it to database, password must be removed from it:
+      delete formDataCopy.password;
+
+      // Set the timestamp to server timestamp:
+      formDataCopy.timestamp = serverTimestamp();
+
+      // Using 'setDoc', update the database with 'users' collection:
+      await setDoc(doc(db, 'users', user.uid), formDataCopy);
 
       // Redirecting to homepage:
       navigate('/');
