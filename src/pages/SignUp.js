@@ -7,6 +7,15 @@ import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRig
 // Way to import an image when to be used as a source img (src) for <img> tag:
 import visibilityIcon from '../assets/svg/visibilityIcon.svg';
 
+// To sign up users using email and password:
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+
+import { db } from '../firebase.config';
+
 const SignUp = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +48,37 @@ const SignUp = () => {
     }));
   };
 
+  // On Submit
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Creating auth
+      const auth = getAuth();
+
+      // createUserWithEmailAndPassword returns a promise with user credentials. Assigning that ot "userCredential"
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // Actual user info is derived from userCredential which will be used to store in database later:
+      const user = userCredential.user;
+
+      // Updating the display name:
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+
+      // Redirecting to homepage:
+      navigate('/');
+    } catch (error) {
+      // Now, error is logged, if any. Later, using "toastify" package, error will be displayed in the UI.
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="pageContainer">
@@ -46,7 +86,7 @@ const SignUp = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <input
             type="text"
             className="nameInput"
