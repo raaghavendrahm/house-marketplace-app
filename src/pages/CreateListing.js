@@ -14,6 +14,9 @@ import {
 import { db } from '../firebase.config';
 import { v4 as uuidv4 } from 'uuid';
 
+// To save listings to firestore:
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+
 const CreateListing = () => {
   // Geocoding API is used to get latitute and longitude values w.r.t the address entered. To do this, credit card details must be added to firebase. If not want to use, "geolocationEnabled" state can be set to false (which is true by default to enable geocoding), so that the form displays a section to add latitude and longitude values manually:
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
@@ -201,9 +204,28 @@ const CreateListing = () => {
       return;
     });
 
-    console.log(imgUrls);
+    // console.log(imgUrls); // logs the images uploaded successfully
+
+    // Create an object to submit to database:
+    const formDataCopy = {
+      ...formData,
+      imgUrls,
+      geolocation,
+      timestamp: serverTimestamp(),
+    };
+
+    // Some cleanup:
+    delete formDataCopy.images;
+    delete formDataCopy.address;
+    location && (formDataCopy.location = location);
+    !formDataCopy.offer && delete formDataCopy.discountedPrice;
+
+    // After cleaning up, save to the database:
+    const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
 
     setLoading(false);
+    toast.success('Listing saved');
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`);
   };
 
   // On Mutate
