@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import { toast } from 'react-toastify';
 
 const CreateListing = () => {
   // Geocoding API is used to get latitute and longitude values w.r.t the address entered. To do this, credit card details must be added to firebase. If not want to use, "geolocationEnabled" state can be set to false (which is true by default to enable geocoding), so that the form displays a section to add latitude and longitude values manually:
@@ -70,9 +71,68 @@ const CreateListing = () => {
   }
 
   // On Submit
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     // console.log(formData); // logs the data entered in the form as an object
+
+    setLoading(true);
+
+    // A couple of checks before doing geocoding and image upload:
+    if (discountedPrice >= regularPrice) {
+      setLoading(false);
+      toast.error('Discounted price needs to be less than regular price');
+      return;
+    }
+
+    if (images.length > 6) {
+      setLoading(false);
+      toast.error('Max 6 images');
+      return;
+    }
+
+    // Geocoding to get latitude and longitude values from the address entered using Geocoding API:
+    let geolocation = {}; // it is the object that holds latitude and longitude values that will be updated to firebase
+
+    let location; // holds the address entered
+
+    // Two conditions of with and without geocoding enabled are handled differently:
+    if (geolocationEnabled) {
+      // if enabled, values are obtained from geocoding api:
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
+      );
+
+      const data = await response.json();
+
+      // console.log(data); // logs the geolocation response data from geocoding api
+
+      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0;
+      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
+
+      // For address (location), if any non trackable address is entered, response comes with a status of 'ZERO_RESULTS'. In tha case, it shall be returned as 'undefined'. Else, the correct address is set.
+      location =
+        data.status === 'ZERO_RESULTS'
+          ? undefined
+          : data.results[0]?.formatted_address;
+
+      // Above, '?' is added after 'results[0]' to avoid error for checking with '??'
+
+      // In case of undefined address, error is toasted:
+      if (location === undefined || location.includes('undefined')) {
+        setLoading(false);
+        toast.error('Please enter a correct address');
+        return;
+      }
+    } else {
+      // if not enabled, entered values are updated:
+      geolocation.lat = latitude;
+      geolocation.lng = longitude;
+      location = address;
+
+      // console.log(geolocation, location); // logs geolocation and location when geolocationEnabled is set to false and coordinates are manully entered.
+    }
+
+    setLoading(false);
   };
 
   // On Mutate
