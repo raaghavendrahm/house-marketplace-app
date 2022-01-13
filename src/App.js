@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './components/PrivateRoute';
+import Category from './pages/Category';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
+
+          {/* With dynamic input after /category both category/rent and cateory/sell takes to Category itself */}
+          <Route path="/category/:categoryName" element={<Category />} />
 
           {/* When user is logged in, profile takes to outlet which is Profile comp. Else, takes to SignIn */}
           <Route path="/profile" element={<PrivateRoute />}>
