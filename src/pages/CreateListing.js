@@ -4,6 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { toast } from 'react-toastify';
 
+// For uploading images:
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
+import { db } from '../firebase.config';
+import { v4 as uuidv4 } from 'uuid';
+
 const CreateListing = () => {
   // Geocoding API is used to get latitute and longitude values w.r.t the address entered. To do this, credit card details must be added to firebase. If not want to use, "geolocationEnabled" state can be set to false (which is true by default to enable geocoding), so that the form displays a section to add latitude and longitude values manually:
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
@@ -90,6 +100,8 @@ const CreateListing = () => {
       return;
     }
 
+    // GEOCODING API:
+
     // Geocoding to get latitude and longitude values from the address entered using Geocoding API:
     let geolocation = {}; // it is the object that holds latitude and longitude values that will be updated to firebase
 
@@ -131,6 +143,65 @@ const CreateListing = () => {
 
       // console.log(geolocation, location); // logs geolocation and location when geolocationEnabled is set to false and coordinates are manully entered.
     }
+
+    // UPLOADING IMAGES:
+
+    // Store images in firebase:
+    const storeImage = async (image) => {
+      // Return a new promise:
+      return new Promise((resolve, reject) => {
+        // Initialize storage:
+        const storage = getStorage();
+
+        // Create filename:
+        const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
+
+        // Create a reference:
+        const storageRef = ref(storage, 'images/' + fileName);
+
+        // Create an upload task:
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        // Progress track taken from firbase storage docs and some modifications are done:
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    // Mutliple promises from above are resolved:
+    const imgUrls = await Promise.all(
+      [...images].map((image) => storeImage(image))
+    ).catch(() => {
+      setLoading(false);
+      toast.error('Images not uploaded');
+      return;
+    });
+
+    console.log(imgUrls);
 
     setLoading(false);
   };
