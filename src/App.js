@@ -8,6 +8,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Navbar from './components/Navbar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -16,7 +17,12 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
-          <Route path="/profile" element={<Profile />} />
+
+          {/* When user is logged in, profile takes to outlet which is Profile comp. Else, takes to SignIn */}
+          <Route path="/profile" element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
