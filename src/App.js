@@ -19,7 +19,7 @@ function App() {
           <Route exact path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
 
-          {/* With dynamic input after /category both category/rent and cateory/sell takes to Category itself */}
+          {/* With dynamic input after /category both category/rent and cateory/sale takes to Category itself */}
           <Route path="/category/:categoryName" element={<Category />} />
 
           {/* When user is logged in, profile takes to outlet which is Profile comp. Else, takes to SignIn */}

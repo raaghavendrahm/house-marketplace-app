@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // To update user database in the firestore:
 import { updateDoc, doc } from 'firebase/firestore';
