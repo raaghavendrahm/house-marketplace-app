@@ -142,7 +142,7 @@ const CreateListing = () => {
       // if not enabled, entered values are updated:
       geolocation.lat = latitude;
       geolocation.lng = longitude;
-      location = address;
+      // location = address; // this line is removed due to some issued with formatted_address from google. So, it is not used here and down in the cleanup section of formDataCopy, formDataCopy.location is directly set to the typed address as google sometimes doesn't fetch the complete address.
 
       // console.log(geolocation, location); // logs geolocation and location when geolocationEnabled is set to false and coordinates are manully entered.
     }
@@ -215,9 +215,10 @@ const CreateListing = () => {
     };
 
     // Some cleanup:
+    formDataCopy.location = address;
     delete formDataCopy.images;
     delete formDataCopy.address;
-    location && (formDataCopy.location = location);
+    // location && (formDataCopy.location = location); // this is removed due to formatted_address issue
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
     // After cleaning up, save to the database:
