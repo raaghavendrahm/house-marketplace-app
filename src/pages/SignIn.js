@@ -13,6 +13,9 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 // To use toastify for alerts:
 import { toast } from 'react-toastify';
 
+// Import OAuth:
+import OAuth from '../components/OAuth';
+
 const SignIn = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -115,7 +118,7 @@ const SignIn = () => {
           </div>
         </form>
 
-        {/* Google OAuth comes here later */}
+        <OAuth />
 
         <Link to="/sign-up" className="registerLink">
           Sign Up Instead

@@ -22,6 +22,9 @@ import { setDoc, doc, serverTimestamp } from 'firebase/firestore';
 // To use toastify for alerts:
 import { toast } from 'react-toastify';
 
+// Import OAuth:
+import OAuth from '../components/OAuth';
+
 const SignUp = () => {
   // State to show password:
   const [showPassword, setShowPassword] = useState(false);
@@ -152,7 +155,7 @@ const SignUp = () => {
           </div>
         </form>
 
-        {/* Google OAuth comes here later */}
+        <OAuth />
 
         <Link to="/sign-in" className="registerLink">
           Sign In Instead
