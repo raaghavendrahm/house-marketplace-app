@@ -1,3 +1,5 @@
+### Set up firebase emulator on your local machine before to run the app successfully.
+
 [Click here](https://house-marketplace-emulator.vercel.app/) for the live demo  of the website on [Vercel](https://www.vercel.com/).
 
 Project Credits: [Brad Traversy](https://github.com/bradtraversy)
