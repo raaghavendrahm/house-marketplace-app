@@ -42,6 +42,11 @@ const Slider = () => {
     return <Spinner />;
   }
 
+  // In case of no listings, instead of showing a big blank image space, return nothing:
+  if (listings.length === 0) {
+    return <></>;
+  }
+
   return (
     listings && (
       <>
