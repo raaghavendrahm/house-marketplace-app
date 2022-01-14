@@ -17,6 +17,18 @@ import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg';
 import homeIcon from '../assets/svg/homeIcon.svg';
 import { Link } from 'react-router-dom';
 
+// To show created listings:
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+} from 'firebase/firestore';
+import { useEffect } from 'react';
+import ListingItem from '../components/ListingItem';
+
 const Profile = () => {
   const auth = getAuth();
 
@@ -28,11 +40,40 @@ const Profile = () => {
     email: auth.currentUser.email,
   });
 
+  const [loading, setLoading] = useState(true);
+  const [listings, setListings] = useState(null);
+
   // Destructuring name and email:
   const { name, email } = formData;
 
   // Initialize useNavigate:
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserListings = async () => {
+      const listingsRef = collection(db, 'listings');
+      const q = query(
+        listingsRef,
+        where('userRef', '==', auth.currentUser.uid),
+        orderBy('timestamp', 'desc')
+      );
+      const querySnap = await getDocs(q);
+
+      let listings = []; // const can be used
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setListings(listings);
+      setLoading(false);
+    };
+
+    fetchUserListings();
+  }, [auth.currentUser.uid]);
 
   // On Logout:
   const onLogout = () => {
@@ -70,6 +111,20 @@ const Profile = () => {
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  };
+
+  // On Delete
+  const onDelete = async (listingId) => {
+    if (window.confirm('Are you sure, you want to delete?')) {
+      await deleteDoc(doc(db, 'lisitngs', listingId)); // can be done by creating ref too (docRef)
+
+      // To show updated list after deleting one:
+      const updatedListings = listings.filter(
+        (listing) => listing.id !== listingId
+      );
+      setListings(updatedListings);
+      toast.success('Successfully deleted listing');
+    }
   };
 
   return (
@@ -122,6 +177,22 @@ const Profile = () => {
           <p>Sell or rent your home</p>
           <img src={arrowRight} alt="arrow right" />
         </Link>
+
+        {!loading && listings?.length > 0 && (
+          <>
+            <p className="listingText">Your Listings</p>
+            <ul className="listingsList">
+              {listings.map((listing) => (
+                <ListingItem
+                  key={listing.id}
+                  listing={listing.data}
+                  id={listing.id}
+                  onDelete={() => onDelete(listing.id)}
+                />
+              ))}
+            </ul>
+          </>
+        )}
       </main>
     </div>
   );
