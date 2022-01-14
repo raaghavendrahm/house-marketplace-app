@@ -1,7 +1,6 @@
 // Category page content is pasted and minimal necessary modifications are done to create Offers page.
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   collection,
   getDocs,
@@ -23,9 +22,6 @@ const Offers = () => {
   const [listings, setListings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [lastFetchedListing, setLastFetchedListing] = useState(null); // pagination
-
-  // Initialize useParams hook:
-  const params = useParams();
 
   useEffect(() => {
     const fetchListings = async () => {

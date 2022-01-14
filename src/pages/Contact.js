@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 const Contact = () => {
   const [message, setMessage] = useState('');
   const [landlord, setLandlord] = useState(null);
+
+  // eslint-disable-next-line
   const [searchParams, setSearchParmas] = useSearchParams(); // different, not using useState
 
   // Initialization:

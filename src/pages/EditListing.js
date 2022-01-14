@@ -25,6 +25,8 @@ import { useParams } from 'react-router-dom';
 
 const EditListing = () => {
   // Geocoding API is used to get latitute and longitude values w.r.t the address entered. To do this, credit card details must be added to firebase. If not want to use, "geolocationEnabled" state can be set to false (which is true by default to enable geocoding), so that the form displays a section to add latitude and longitude values manually:
+
+  // eslint-disable-next-line
   const [geolocationEnabled, setGeolocationEnabled] = useState(true);
 
   const [loading, setLoading] = useState(false);
@@ -114,7 +116,7 @@ const EditListing = () => {
       isMounted.current = false;
     };
 
-    // eslint-diable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 
   if (loading) {
@@ -216,6 +218,8 @@ const EditListing = () => {
                 break;
               case 'running':
                 console.log('Upload is running');
+                break;
+              default:
                 break;
             }
           },
