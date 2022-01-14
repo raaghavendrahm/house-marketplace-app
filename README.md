@@ -1,3 +1,7 @@
+[Click here](https://house-marketplace-emulator.vercel.app/) for the live demo  of the website on [Vercel](https://www.vercel.com/).
+
+Project Credits: [Brad Traversy](https://github.com/bradtraversy)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
