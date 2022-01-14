@@ -6,6 +6,7 @@ service cloud.firestore {
     	allow read;
       allow create: if request.auth != null && request.resource.data.imgUrls.size() < 7;
     	allow delete: if resource.data.userRef == request.auth.uid;
+      allow update: if resource.data.userRef == request.auth.uid;
     }
    
     // Users
