@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import rentCategoryImage from '../assets/jpg/rentCategoryImage.jpg';
 import sellCategoryImage from '../assets/jpg/sellCategoryImage.jpg';
 
+// To embed slider:
+import Slider from '../components/Slider';
+
 const Explore = () => {
   return (
     <div className="explore">
@@ -10,7 +13,7 @@ const Explore = () => {
       </header>
 
       <main>
-        {/* Slider comes here later */}
+        <Slider />
 
         <p className="exploreCategoryHeading">Categories</p>
         <div className="exploreCategories">
