@@ -22,7 +22,7 @@ const Listing = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log(docSnap.data());
+        // console.log(docSnap.data());
         setListing(docSnap.data());
         setLoading(false);
       }
@@ -105,7 +105,7 @@ const Listing = () => {
         {/* If the person in the page is not the user who is logged in (authorized), then a button to contact the landlord should appear: */}
         {auth.currentUser?.uid !== listing.userRef && (
           <Link
-            to={`/contact/${listing.userRef}?listingName=${listing.name}&listingLocation=${listing.location}`}
+            to={`/contact/${listing.userRef}?listingName=${listing.name}`}
             className="primaryButton"
           >
             Contact Landlord
