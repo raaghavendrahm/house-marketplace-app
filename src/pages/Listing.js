@@ -9,6 +9,12 @@ import shareIcon from '../assets/svg/shareIcon.svg';
 // To embed maps using leaflet and react-leaflet
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
+// To add slider using swiper:
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+
 const Listing = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -40,7 +46,20 @@ const Listing = () => {
 
   return (
     <main>
-      {/* Slider comes here later */}
+      <Swiper slidesPerView={1} pagination={{ clickable: true }}>
+        {/* Loop through images here: */}
+        {listing.imgUrls.map((url, index) => (
+          <SwiperSlide key={index}>
+            <div
+              className="swiperSlideDiv"
+              style={{
+                background: `url(${listing.imgUrls[index]}) center no-repeat`,
+                backgroundSize: 'cover',
+              }}
+            ></div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       <div
         className="shareIconDiv"
