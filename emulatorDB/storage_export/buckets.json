@@ -1,0 +1,10 @@
+{
+  "buckets": [
+    {
+      "id": "default-bucket"
+    },
+    {
+      "id": "house-marketplace-emulator.appspot.com"
+    }
+  ]
+}

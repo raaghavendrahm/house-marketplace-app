@@ -1,0 +1,19 @@
+{
+  "name": "images/3oCCiQXnvmQrbtilABUUnhSlt076-Appearance.jpg-99f7f66c-a40f-4d94-b395-45056836c673",
+  "bucket": "house-marketplace-emulator.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1642075086306,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "3af846c2-4f33-4ca9-8d9d-0526a2824cf4"
+  ],
+  "timeCreated": "2022-01-13T11:58:06.305Z",
+  "updated": "2022-01-13T11:58:06.483Z",
+  "size": 27366471,
+  "md5Hash": "4nqo26Whs/orpPLtpFgKMw==",
+  "crc32c": "3493659743"
+}
