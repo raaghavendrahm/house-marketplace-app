@@ -116,7 +116,7 @@ const Profile = () => {
   // On Delete
   const onDelete = async (listingId) => {
     if (window.confirm('Are you sure, you want to delete?')) {
-      await deleteDoc(doc(db, 'lisitngs', listingId)); // can be done by creating ref too (docRef)
+      await deleteDoc(doc(db, 'listings', listingId)); // can be done by creating ref too (docRef)
 
       // To show updated list after deleting one:
       const updatedListings = listings.filter(
